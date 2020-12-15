@@ -2,21 +2,43 @@ import './App.css';
 import React, { useState } from 'react';
 
 const INIT_TODOS = [
-  'learn React',
-  'Meet friends for lunch',
-  'Develop course project'
+  {
+    text: 'learn React',
+    isComplete: false
+  },
+  {
+    text: 'Meet friends for lunch',
+    isComplete: false
+  },
+  {
+    text: 'Develop course project',
+    isComplete: false
+  }
 ];
 
 //div prints out all the todo items in INIT_TODOS array
-function Todo ({ todo, removeFromTodo, index }){
+function Todo ({ todo, removeFromTodo, completeTask, index }){
 
   return (
-    <div className="todo">
-      {todo}
+    <div 
+      className="todo"
+      onClick={() => completeTask(index)}>
+      <div 
+        className="task"
+        style={{
+          textDecoration: todo.isComplete ? 'line-through' : ''
+        }}>
+        {todo.isComplete ? 
+          <i className="icon far fa-check-square"></i> 
+          : 
+        <i className="icon fal fa-square" ></i>}
+        {todo.text}
+      </div>
       <a href="#!" 
          className="removeIcon" onClick={(e) => removeFromTodo(e, index)}>
-        <i className="far fa-trash-alt"></i>
+        <i className="icon far fa-trash-alt"></i>
       </a>
+  
     </div>
   )
 }
@@ -54,15 +76,21 @@ function App() {
       return;
     }
 
-    let newTodos = [newTask, ...todos];
+    let newTodos = [{text: newTask, isComplete:false}, ...todos];
+    setTodos(newTodos);
+  }
+
+  const completeTask = (index) => {
+    console.log('complete:' + index);
+    let newTodos = [...todos];
+    newTodos[index].isComplete = true;
     setTodos(newTodos);
   }
 
   const removeFromTodo = (event, index) => {
-    // prevent the page reload even we set path as "#!"
-    event.preventDefault();
-    // console.log(event.target);
-    console.log(index);
+    event.preventDefault(); // prevent the page reload even we set path as "#!"
+    event.stopPropagation();//prevent 向上传递,防止触发completeTask
+    // console.log(index);
     let newTodos = [...todos];
     newTodos.splice(index, 1);
     setTodos(newTodos);
@@ -73,12 +101,13 @@ function App() {
       <div className="todo-list">
         <TodoForm addTodo={addTodo}/>
         {
-          todos.map( (item, index) =>
+          todos.map( (todo, index) =>
           <Todo 
             index={index}
             removeFromTodo={removeFromTodo} 
-            key={item} 
-            todo={item}
+            completeTask={completeTask}
+            key={todo.text} 
+            todo={todo}
           />)
         }
       </div>
