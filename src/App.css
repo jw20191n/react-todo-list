@@ -20,4 +20,14 @@
   display: flex;
   align-items: center;
   border-radius: 3px;
+  /* let delete icon on the right */
+  justify-content: space-between;
+}
+
+.todo:hover .removeIcon{
+  display: block;
+}
+
+.removeIcon {
+  display: none;
 }

@@ -8,9 +8,16 @@ const INIT_TODOS = [
 ];
 
 //div prints out all the todo items in INIT_TODOS array
-function Todo ({ todo }){
+function Todo ({ todo, removeFromTodo, index }){
+
   return (
-    <div className="todo">{todo}</div>
+    <div className="todo">
+      {todo}
+      <a href="#!" 
+         className="removeIcon" onClick={(e) => removeFromTodo(e, index)}>
+        <i className="far fa-trash-alt"></i>
+      </a>
+    </div>
   )
 }
 
@@ -43,7 +50,21 @@ function App() {
   //add it to the old 'todos' array and form a new array - newTodos
   //and finally setState set newTodos to replace the old todos
   const addTodo = (newTask) => {
+    if(newTask === ''){
+      return;
+    }
+
     let newTodos = [newTask, ...todos];
+    setTodos(newTodos);
+  }
+
+  const removeFromTodo = (event, index) => {
+    // prevent the page reload even we set path as "#!"
+    event.preventDefault();
+    // console.log(event.target);
+    console.log(index);
+    let newTodos = [...todos];
+    newTodos.splice(index, 1);
     setTodos(newTodos);
   }
 
@@ -52,7 +73,13 @@ function App() {
       <div className="todo-list">
         <TodoForm addTodo={addTodo}/>
         {
-          todos.map( (item)=><Todo key={item} todo={item}/>)
+          todos.map( (item, index) =>
+          <Todo 
+            index={index}
+            removeFromTodo={removeFromTodo} 
+            key={item} 
+            todo={item}
+          />)
         }
       </div>
     </div>
