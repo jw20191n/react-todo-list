@@ -1,5 +1,5 @@
 import './App.css';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 const INIT_TODOS = [
   {
@@ -65,8 +65,13 @@ function TodoForm( {addTodo} ) {
 
 
 function App() {
+  //localStorage.getItem('todos') is a JSON string
+  //JSON.parse will convert the item into 
+  const[todos, setTodos] = useState(JSON.parse(localStorage.getItem('todos')) || INIT_TODOS);
 
-  const[todos, setTodos] = useState(INIT_TODOS);
+  useEffect(() => {
+    localStorage.setItem('todos', JSON.stringify(todos))
+  }, [todos]);
 
   //addTodo function sends in a newTask
   //add it to the old 'todos' array and form a new array - newTodos
