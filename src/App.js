@@ -43,7 +43,7 @@ function Todo ({ todo, removeFromTodo, completeTask, index }){
   )
 }
 
-//form that handles the input 
+//form component that handles the input 
 function TodoForm( {addTodo} ) {
   const [value, setValue] = useState('');
   const handleSubmit = (event) => {
@@ -57,7 +57,11 @@ function TodoForm( {addTodo} ) {
       <input 
         value={value}
         className="input" 
-        onChange={(e) => {setValue(e.target.value)}}
+        onChange={(e) => {
+          console.log('before: ' + value);
+          setValue(e.target.value);
+          console.log('after: ' + value);
+        }}
         />
     </form>
   );
