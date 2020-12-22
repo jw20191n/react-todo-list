@@ -35,7 +35,10 @@ function Todo ({ todo, removeFromTodo, completeTask, index }){
         {todo.text}
       </div>
       <a href="#!" 
-         className="removeIcon" onClick={(e) => removeFromTodo(e, index)}>
+         className="removeIcon" 
+         onClick={(e) => {
+           removeFromTodo(e, index);
+           }}>
         <i className="icon far fa-trash-alt"></i>
       </a>
   
